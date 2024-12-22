@@ -1,0 +1,24 @@
+[project]
+name = "fastapi-date-versioning"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Tobias Egelund", email = "egelundtobias@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.6",
+    "uvicorn>=0.34.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "black>=24.10.0",
+    "pytest>=8.3.4",
+    "ruff>=0.8.4",
+]
