@@ -24,7 +24,7 @@ app = fastapi.FastAPI(
 
 
 def get_fn_version(
-    version: datetime.date, API_VERSIONS: dict[datetime.date, t.Callable]
+    version: datetime.date, versions: dict[datetime.date, t.Callable]
 ) -> t.Callable:
     """Get the function version based on the date.
 
@@ -33,12 +33,12 @@ def get_fn_version(
 
     Args:
         version (datetime.date): The version date.
-        API_VERSIONS (dict[datetime.date, t.Callable]): The API versions.
+        versions (dict[datetime.date, t.Callable]): The API versions.
     """
-    for date in sorted(API_VERSIONS.keys(), reverse=True):
+    for date in sorted(versions.keys(), reverse=True):
         if version >= date:
             logger.info(f"Using version {date}")
-            return API_VERSIONS[date]
+            return versions[date]
 
     raise HTTPException(status_code=500, detail=f"Version {version} is not supported")
 
