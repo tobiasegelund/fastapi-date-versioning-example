@@ -3,12 +3,18 @@ name = "fastapi-date-versioning"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-authors = [
-    { name = "Tobias Egelund", email = "egelundtobias@gmail.com" }
-]
+authors = [{ name = "Tobias Egelund", email = "egelundtobias@gmail.com" }]
 requires-python = ">=3.12"
 dependencies = [
+    "faiss-cpu>=1.9.0.post1",
     "fastapi>=0.115.6",
+    "langchain-community>=0.3.13",
+    "numpy<2",
+    "pandas>=2.2.3",
+    "pyarrow>=18.1.0",
+    "python-dotenv>=1.0.1",
+    "sentence-transformers>=3.3.1",
+    "torch<2.3.0",
     "uvicorn>=0.34.0",
 ]
 
@@ -17,8 +23,4 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = [
-    "black>=24.10.0",
-    "pytest>=8.3.4",
-    "ruff>=0.8.4",
-]
+dev = ["black>=24.10.0", "pytest>=8.3.4", "ruff>=0.8.4", "ipykernel>=6.29.5"]
