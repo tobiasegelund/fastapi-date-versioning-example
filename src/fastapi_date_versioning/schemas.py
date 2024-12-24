@@ -11,8 +11,14 @@ def validate_date(date_str: str) -> datetime.date:
 
 class RequestInput(BaseModel):
     input: str = Field(example="John")
+    top_k: int = Field(example=5)
     version: t.Annotated[datetime.date, BeforeValidator(validate_date)]
 
 
+class QuestionAnswer(BaseModel):
+    question: str
+    answer: str
+
+
 class ResponseOutput(BaseModel):
-    message: str
+    output: list[QuestionAnswer]

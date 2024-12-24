@@ -46,4 +46,4 @@ def get_fn_version(
 @app.post("/", response_model=ResponseOutput)
 async def home(request: RequestInput) -> ResponseOutput:
     fn = get_fn_version(request.version, home_versions)
-    return fn(request)
+    return await fn(request)
