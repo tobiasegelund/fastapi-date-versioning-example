@@ -1,3 +1,9 @@
+"""Example to show how to use date versioning in FastAPI.
+
+POST requests: payload should be a JSON object with a "version" key.
+GET requests: query parameter "v"/"version" should be provided, e.g. ?v=20200630
+"""
+
 import datetime
 import typing as t
 
@@ -28,7 +34,6 @@ def get_fn_version(
     raise HTTPException(status_code=500, detail=f"Version {version} is not supported")
 
 
-# For GET requests: ?v=20200630
 @app.post("/", response_model=ResponseOutput)
 async def home(request: RequestInput) -> ResponseOutput:
     fn = get_fn_version(request.version, home_versions)
