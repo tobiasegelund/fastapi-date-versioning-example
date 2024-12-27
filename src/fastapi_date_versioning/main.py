@@ -6,21 +6,32 @@ GET requests: query parameter "v"/"version" should be provided, e.g. ?v=20200630
 
 import datetime
 import typing as t
+from contextlib import asynccontextmanager
 
 import fastapi
-from fastapi import HTTPException
+from fastapi import FastAPI
+from fastapi import HTTPException, Request
 from dotenv import load_dotenv
+from sentence_transformers import SentenceTransformer
 
 from fastapi_date_versioning.schemas import RequestInput, ResponseOutput
-from fastapi_date_versioning.api.home import API_VERSIONS as home_versions
+from fastapi_date_versioning.api import HOME_API_VERSIONS
 from fastapi_date_versioning.logger import logger
 
 load_dotenv()
 
 
-app = fastapi.FastAPI(
-    title="FastAPI Date Versioning",
-)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Run at startup
+    Initialize the Client and add it to request.state
+    """
+    model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+    app.state.model = model
+    yield
+
+
+app = fastapi.FastAPI(title="FastAPI Date Versioning", lifespan=lifespan)
 
 
 def get_fn_version(
@@ -44,6 +55,12 @@ def get_fn_version(
 
 
 @app.post("/", response_model=ResponseOutput)
-async def home(request: RequestInput) -> ResponseOutput:
-    fn = get_fn_version(request.version, home_versions)
-    return await fn(request)
+async def home(inp: RequestInput, req: Request) -> ResponseOutput:
+    logger.info(f"endpoint=/ {inp}")
+
+    model = req.app.state.model
+    fn = get_fn_version(inp.version, HOME_API_VERSIONS)
+
+    embedding = model.encode([inp.input])
+    resp = await fn(inp, embedding)
+    return resp

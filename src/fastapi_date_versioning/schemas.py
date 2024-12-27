@@ -1,3 +1,4 @@
+import uuid
 import datetime
 import typing as t
 
@@ -13,6 +14,9 @@ class RequestInput(BaseModel):
     input: str = Field(example="John")
     top_k: int = Field(example=5)
     version: t.Annotated[datetime.date, BeforeValidator(validate_date)]
+
+    # May be decorator to add _uuid field
+    # _uuid = Field(default_factory=uuid.uuid4, alias="uuid")
 
 
 class QuestionAnswer(BaseModel):
