@@ -7,7 +7,6 @@ from fastapi_date_versioning.constants import (
     PATH_TO_QUESTIONS_INDEX,
     PATH_TO_DATA,
 )
-from fastapi_date_versioning.logger import logger
 
 
 class VectorStore:
@@ -18,9 +17,7 @@ class VectorStore:
         self.df = pd.read_parquet(PATH_TO_DATA)
 
     def search(self, vec: np.ndarray, k: int) -> pd.DataFrame:
-        # distance, indices
         _, indices = self.questions_index.search(vec, k)
-        logger.info(f"Indices: {indices}")
         return self.df.iloc[indices[0]]
 
 

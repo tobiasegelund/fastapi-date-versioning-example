@@ -22,7 +22,7 @@ load_dotenv()
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> t.AsyncGenerator[None, None]:
     """Run at startup
     Initialize the Client and add it to request.state
     """
