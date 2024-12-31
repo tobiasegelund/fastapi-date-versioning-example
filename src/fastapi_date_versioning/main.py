@@ -11,6 +11,7 @@ from contextlib import asynccontextmanager
 import fastapi
 from fastapi import FastAPI
 from fastapi import HTTPException, Request
+import numpy as np
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 
@@ -36,7 +37,7 @@ app = fastapi.FastAPI(title="FastAPI Date Versioning", lifespan=lifespan)
 
 def get_fn_version(
     version: datetime.date, versions: dict[datetime.date, t.Callable]
-) -> t.Callable:
+) -> t.Callable[[RequestInput, np.ndarray], t.Awaitable[ResponseOutput]]:
     """Get the function version based on the date.
 
     It will traverse through dates in descending order and return the first version. If no version
